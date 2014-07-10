@@ -1,3 +1,5 @@
+# compress dir 
 tar -zvcf ifile.tgz ifile/
+
+# send compressed file to dir where you want to put your backup
 mv ifile.tgz /Users/bing/Dropbox/
-#rsync -rv --max-size=10M ifile bing@al:/home/bing/backup/
