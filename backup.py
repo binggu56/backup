@@ -1,27 +1,30 @@
 #!/usr/bin/python
-# Filename: backup_v4
+
+
 import time,os,sys
 
 def check(dir):
-    "check if the file exist."
-
-    "Or not."
+    """
+        check if the file exist or not.
+    """
     if not os.path.exists(dir):
         sys.exit('The file does not exist.')
     else:
         print("%s will be backuped." %(dir))
 
-def bak2remote(source):
-        target_dir = '/home/bing/backup/' 
-        target=target_dir+time.strftime('%Y%m%d') + '.tar.gz'
-        command='tar zcvpf - %s | ssh bing@pople.psc.sc.edu "cat > %s"' %(source,target)
-        if os.system(command) == 0:
-            print('Successful backup to bing@pople:',target_dir)
-        else:
-            print('Backup failed.')
+def bak2remote(source,remote):
+
+    remote=str(input('what is the name for remmote host\n'))
+    target_dir = input('directory you want to put in remote host')
+    target = target_dir+time.strftime('%Y%m%d') + '.tar.gz'
+    command = 'tar zcvpf - %s | ssh %s "cat > %s"' %(source,remote,target)
+    if os.system(command) == 0:
+        print('Successful backup to %s:%s',%(remote,target_dir))
+    else:
+        print('Backup failed.')
 
 def bak2local(source):
-        target_dir = '/home/bing/Dropbox/backup/'
+        target_dir = str(input('where to put your backup:'))
         name = input('name your backup: ')
         target=target_dir+name+time.strftime('%Y%m%d') + '.tgz'
 #        limit = input('Do you want to limit the file size?')
@@ -35,7 +38,7 @@ def bak2local(source):
 
 while True:
     try:
-        dest=int(input('Where to backup: 1) POPLE 2) Dropbox\n'))
+        dest=int(input('Where to backup: 1) remote 2) local\n'))
         break
     except ValueError:
         print("Oops!  That was no valid number.  Try again...")
@@ -51,10 +54,11 @@ while True:
 #for arg in sys.argv[1:]:
 check(src)
 if dest==1 and todo==1:
-    bak2remote(arg)
+
+    bak2remote(arg,remote)
 elif dest==2 and todo==1:
     bak2local(src)
 
 #source = sys.argv[1]
 
-# If you are using Windows, use source = [r'C:\Documents', r'D:\Work'] or something like that
+# If you are using Windows, use source = [r'C:\Documents', r'D:\Work']
