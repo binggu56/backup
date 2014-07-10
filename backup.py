@@ -14,10 +14,11 @@ def check(dir):
 
 def bak2remote(source,remote):
 
-    remote=str(input('what is the name for remmote host\n'))
+    remote_host=str(input('what is the name for remmote host\n'))
+    username = str(input('your username:\n') 
     target_dir = input('directory you want to put in remote host')
     target = target_dir+time.strftime('%Y%m%d') + '.tar.gz'
-    command = 'tar zcvpf - %s | ssh %s "cat > %s"' %(source,remote,target)
+    command = 'tar zcvpf - %s | ssh %s@%s "cat > %s"' %(source,username,remote_host,target)
     if os.system(command) == 0:
         print('Successful backup to %s:%s',%(remote,target_dir))
     else:
